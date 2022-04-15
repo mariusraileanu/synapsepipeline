@@ -1,0 +1,37 @@
+{
+	"name": "azdatabricks",
+	"properties": {
+		"parameters": {
+			"databricksWorskpaceURL": {
+				"type": "string"
+			},
+			"secretNameDatabricksToken": {
+				"type": "string"
+			},
+			"databricksClusterID": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "@linkedService().databricksWorskpaceURL",
+			"accessToken": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "azkeyvaultglsah",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().secretNameDatabricksToken",
+					"type": "Expression"
+				}
+			},
+			"existingClusterId": "@linkedService().databricksClusterID"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
