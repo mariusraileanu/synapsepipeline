@@ -21,7 +21,7 @@
 		"annotations": [],
 		"type": "AzureMySql",
 		"typeProperties": {
-			"connectionString": "Server=@{linkedService().hostName};Port=@{linkedService().port};Database=@{linkedService().databaseName};UID=@{linkedService().user_name};SSLMode=1;UseSystemTrustStore=0",
+			"connectionString": "Server=@{linkedService().hostName};Port=@{linkedService().port};Database=@{linkedService().databaseName};UID=@{linkedService().userName};SSLMode=1;UseSystemTrustStore=0",
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
