@@ -1,0 +1,21 @@
+{
+	"name": "azmysql",
+	"properties": {
+		"annotations": [],
+		"type": "AzureMySql",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "azkeyvaultglsah",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "SQLDBConnStringDotNet"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
