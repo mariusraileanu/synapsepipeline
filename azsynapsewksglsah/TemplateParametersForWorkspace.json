@@ -11,9 +11,6 @@
 		"AzureMySql_connectionString": {
 			"value": ""
 		},
-		"AzureSqlDatabase_connectionString": {
-			"value": ""
-		},
 		"azsynapsewksglsah-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
@@ -21,6 +18,9 @@
 			"value": ""
 		},
 		"azsqlserver_connectionString": {
+			"value": ""
+		},
+		"azmysql_connectionString": {
 			"value": ""
 		},
 		"FrameworkFunctions_properties_typeProperties_functionAppUrl": {

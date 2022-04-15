@@ -15,10 +15,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureMySql'"
 		},
-		"AzureSqlDatabase_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase'"
-		},
 		"azsynapsewksglsah-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'azsynapsewksglsah-WorkspaceDefaultSqlServer'"
@@ -30,6 +26,10 @@
 		"azsqlserver_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'azsqlserver'"
+		},
+		"azmysql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'azmysql'"
 		},
 		"FrameworkFunctions_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -146,6 +146,10 @@
 									"userName": {
 										"value": "@pipeline().parameters.userName",
 										"type": "Expression"
+									},
+									"secretNamePassword": {
+										"value": "@pipeline().parameters.secretNamePassword",
+										"type": "Expression"
 									}
 								}
 							}
@@ -206,6 +210,9 @@
 						"type": "string"
 					},
 					"url": {
+						"type": "string"
+					},
+					"secretNamePassword": {
 						"type": "string"
 					}
 				},
@@ -718,6 +725,10 @@
 																"url": {
 																	"value": "@json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.url",
 																	"type": "Expression"
+																},
+																"secretNamePassword": {
+																	"value": "@json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.config.secretNamePassword",
+																	"type": "Expression"
 																}
 															}
 														}
@@ -1132,10 +1143,10 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureMySql",
+					"referenceName": "azmysql",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"host_name": {
+						"hostName": {
 							"value": "@dataset().hostName",
 							"type": "Expression"
 						},
@@ -1143,12 +1154,16 @@
 							"value": "@dataset().port",
 							"type": "Expression"
 						},
-						"database_name": {
+						"databaseName": {
 							"value": "@dataset().databaseName",
 							"type": "Expression"
 						},
-						"user_name": {
+						"userName": {
 							"value": "@dataset().userName",
+							"type": "Expression"
+						},
+						"secretNamePassword": {
+							"value": "@dataset().secretNamePassword",
 							"type": "Expression"
 						}
 					}
@@ -1168,6 +1183,9 @@
 					},
 					"userName": {
 						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
 					}
 				},
 				"annotations": [],
@@ -1181,7 +1199,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/AzureMySql')]"
+				"[concat(variables('workspaceId'), '/linkedServices/azmysql')]"
 			]
 		},
 		{
@@ -1241,25 +1259,6 @@
 				"type": "AzureMySql",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureMySql_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/AzureSqlDatabase')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureSqlDatabase_connectionString')]"
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",
@@ -1742,6 +1741,54 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/azsqlserver')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/azmysql')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"hostName": {
+						"type": "string"
+					},
+					"port": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureMySql",
+				"typeProperties": {
+					"connectionString": "[parameters('azmysql_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "azkeyvaultglsah",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": {
+							"value": "@linkedService().secretNamePassword",
+							"type": "Expression"
+						}
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/azkeyvaultglsah')]"
 			]
 		}
 	]
