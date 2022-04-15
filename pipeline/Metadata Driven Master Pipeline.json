@@ -1,0 +1,77 @@
+{
+	"name": "Metadata Driven Master Pipeline",
+	"properties": {
+		"description": "procfwk child pipeline used to execute Worker pipelines within a given execution stage. This pipeline will be called once for each stage, then execute all Workers in parallel.",
+		"activities": [
+			{
+				"name": "Metadata Driven Source to Raw Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Metadata Driven Source to Raw Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"jobName": {
+							"value": "@pipeline().parameters.jobName",
+							"type": "Expression"
+						},
+						"windowStartTime": {
+							"value": "@pipeline().parameters.windowStartTime",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Metadata Driven Raw to Bronze Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Metadata Driven Source to Raw Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Metadata Driven Raw to Bronze Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"jobName": {
+							"value": "@pipeline().parameters.jobName",
+							"type": "Expression"
+						},
+						"windowStartTime": {
+							"value": "@pipeline().parameters.windowStartTime",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"jobName": {
+				"type": "string",
+				"defaultValue": "Load MySQL"
+			},
+			"windowStartTime": {
+				"type": "string",
+				"defaultValue": "20220706"
+			}
+		},
+		"annotations": [
+			"procfwk",
+			"Child"
+		],
+		"lastPublishTime": "2022-04-07T11:01:08Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

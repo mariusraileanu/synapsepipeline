@@ -1,0 +1,153 @@
+{
+	"name": "Metadata Driven Source to Raw Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Pipelines",
+				"description": "Returns all pipelines from the metadata to be executed within a given processing stage.",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.00:10:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[get_job_metadata]",
+						"storedProcedureParameters": {
+							"jobName": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.jobName",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "GetSetMetadata",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Execute Pipelines",
+				"description": "Second level ForEach to run in parallel all pipelines within the stage. Items for iteration passed from the Get Pipelines lookup activity.",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Pipelines",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@json(activity('Get Pipelines').output.value[0].metadata).extractPipeline",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"batchCount": 50,
+					"activities": [
+						{
+							"name": "Check source type",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"on": {
+									"value": "@json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.config.connectionType",
+									"type": "Expression"
+								},
+								"cases": [
+									{
+										"value": "mysql",
+										"activities": [
+											{
+												"name": "Copy Data from MySQL to ADLS",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Copy Data from MySQL to ADLS",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"tableName": {
+															"value": "@item().config.tableName",
+															"type": "Expression"
+														},
+														"container": {
+															"value": "@json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.container",
+															"type": "Expression"
+														},
+														"filePath": {
+															"value": "@replace(replace(replace(replace(replace(json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.filePath, '{dataset}', item().config.dataset), '{source}', toLower(json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.connectionType)), 'YYYY', substring(pipeline().parameters.windowStartTime, 0, 4)), 'MM', substring(pipeline().parameters.windowStartTime, 4, 2)), 'DD', substring(pipeline().parameters.windowStartTime, 6, 2))",
+															"type": "Expression"
+														},
+														"fileName": {
+															"value": "@item().config.fileName",
+															"type": "Expression"
+														},
+														"hostName": {
+															"value": "@json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.config.hostName",
+															"type": "Expression"
+														},
+														"port": {
+															"value": "@json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.config.port",
+															"type": "Expression"
+														},
+														"databaseName": {
+															"value": "@json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.config.databaseName",
+															"type": "Expression"
+														},
+														"userName": {
+															"value": "@json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.config.userName",
+															"type": "Expression"
+														},
+														"url": {
+															"value": "@json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.url",
+															"type": "Expression"
+														}
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"jobName": {
+				"type": "string",
+				"defaultValue": "Load MySQL"
+			},
+			"windowStartTime": {
+				"type": "string",
+				"defaultValue": "20220706"
+			}
+		},
+		"annotations": [
+			"procfwk",
+			"Child"
+		],
+		"lastPublishTime": "2022-04-08T11:53:17Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

@@ -1,0 +1,28 @@
+{
+	"name": "azanomalydetectorglsah",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "CognitiveService",
+		"typeProperties": {
+			"subscriptionId": "fdc33604-09e4-45f1-a48e-46a602d755d4",
+			"resourceGroup": "rg-end-to-end-analytics-prod-00001",
+			"csName": "azanomalydetectorglsah",
+			"csKind": "AnomalyDetector",
+			"csLocation": "centralindia",
+			"endPoint": "https://azanomalydetectorglsah.cognitiveservices.azure.com/",
+			"csKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "azkeyvaultglsah",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "azanomalydetectorglsah-Key"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

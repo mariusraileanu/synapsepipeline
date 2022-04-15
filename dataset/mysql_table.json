@@ -1,0 +1,54 @@
+{
+	"name": "mysql_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureMySql",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"host_name": {
+					"value": "@dataset().hostName",
+					"type": "Expression"
+				},
+				"port": {
+					"value": "@dataset().port",
+					"type": "Expression"
+				},
+				"database_name": {
+					"value": "@dataset().databaseName",
+					"type": "Expression"
+				},
+				"user_name": {
+					"value": "@dataset().userName",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"tableName": {
+				"type": "string"
+			},
+			"hostName": {
+				"type": "string"
+			},
+			"port": {
+				"type": "string"
+			},
+			"databaseName": {
+				"type": "string"
+			},
+			"userName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

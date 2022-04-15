@@ -1,0 +1,18 @@
+{
+	"name": "azmlwksglsah",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureMLService",
+		"typeProperties": {
+			"subscriptionId": "fdc33604-09e4-45f1-a48e-46a602d755d4",
+			"resourceGroupName": "rg-end-to-end-analytics-prod-00001",
+			"mlWorkspaceName": "azmlwksglsah",
+			"authentication": "MSI"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
