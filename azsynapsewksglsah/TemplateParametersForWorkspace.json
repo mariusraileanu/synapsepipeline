@@ -1,0 +1,60 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "azsynapsewksglsah"
+		},
+		"AzureDatabricks_accessToken": {
+			"value": ""
+		},
+		"AzureMySql_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase_connectionString": {
+			"value": ""
+		},
+		"azsynapsewksglsah-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"linkedServiceMetadata_connectionString": {
+			"value": ""
+		},
+		"azsqlserver_connectionString": {
+			"value": ""
+		},
+		"FrameworkFunctions_properties_typeProperties_functionAppUrl": {
+			"value": "https://frameworkfunctions00001.azurewebsites.net"
+		},
+		"azanomalydetectorglsah_properties_typeProperties_subscriptionId": {
+			"value": "fdc33604-09e4-45f1-a48e-46a602d755d4"
+		},
+		"azcurateddatalakeglsah_properties_typeProperties_url": {
+			"value": "https://azcurateddatalakeglsah.dfs.core.windows.net"
+		},
+		"azkeyvaultglsah_properties_typeProperties_baseUrl": {
+			"value": "https://azkeyvaultglsah.vault.azure.net/"
+		},
+		"azmlwksglsah_properties_typeProperties_subscriptionId": {
+			"value": "fdc33604-09e4-45f1-a48e-46a602d755d4"
+		},
+		"azmlwksglsah_properties_typeProperties_resourceGroupName": {
+			"value": "rg-end-to-end-analytics-prod-00001"
+		},
+		"azrawdatalakeglsah_properties_typeProperties_url": {
+			"value": "@{linkedService().url}"
+		},
+		"azsynapsewksglsah-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://azwksdatalakeglsah.dfs.core.windows.net"
+		},
+		"aztextanalyticsglsah_properties_typeProperties_subscriptionId": {
+			"value": "fdc33604-09e4-45f1-a48e-46a602d755d4"
+		},
+		"azwksdatalakeglsah_properties_typeProperties_url": {
+			"value": "https://azwksdatalakeglsah.dfs.core.windows.net"
+		},
+		"schedule_properties_pipeline_parameters_windowStartTime": {
+			"value": "@{formatDateTime(trigger().outputs.windowStartTime,'yyyyMMdd')}"
+		}
+	}
+}
