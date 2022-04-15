@@ -11,7 +11,7 @@
 			"userName": {
 				"type": "string"
 			},
-			"secretName": {
+			"secretNamePassword": {
 				"type": "string"
 			}
 		},
@@ -26,7 +26,7 @@
 					"type": "LinkedServiceReference"
 				},
 				"secretName": {
-					"value": "@linkedService().secretName",
+					"value": "@linkedService().secretNamePassword",
 					"type": "Expression"
 				}
 			}
