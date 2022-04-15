@@ -1,0 +1,44 @@
+{
+	"name": "azsql_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "azsqlserver",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"serverName": {
+					"value": "@dataset().serverName",
+					"type": "Expression"
+				},
+				"databaseName": {
+					"value": "@dataset().databaseName",
+					"type": "Expression"
+				},
+				"userName": {
+					"value": "@dataset().userName",
+					"type": "Expression"
+				},
+				"secretNamePassword": {
+					"value": "@dataset().secretNamePassword",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"serverName": {
+				"type": "string"
+			},
+			"databaseName": {
+				"type": "string"
+			},
+			"userName": {
+				"type": "string"
+			},
+			"secretNamePassword": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

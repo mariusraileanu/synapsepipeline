@@ -31,6 +31,28 @@
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
+					"dataset": {
+						"referenceName": "azsql_table",
+						"type": "DatasetReference",
+						"parameters": {
+							"serverName": {
+								"value": "@pipeline().parameters.serverName",
+								"type": "Expression"
+							},
+							"databaseName": {
+								"value": "@pipeline().parameters.databaseName",
+								"type": "Expression"
+							},
+							"userName": {
+								"value": "@pipeline().parameters.userName",
+								"type": "Expression"
+							},
+							"secretNamePassword": {
+								"value": "@pipeline().parameters.secretNamePassword",
+								"type": "Expression"
+							}
+						}
+					},
 					"firstRowOnly": false
 				}
 			},
@@ -137,6 +159,18 @@
 			"windowStartTime": {
 				"type": "string",
 				"defaultValue": "20220706"
+			},
+			"serverName": {
+				"type": "string"
+			},
+			"databaseName": {
+				"type": "string"
+			},
+			"userName": {
+				"type": "string"
+			},
+			"secretNamePassword": {
+				"type": "string"
 			}
 		},
 		"annotations": [
