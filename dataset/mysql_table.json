@@ -2,10 +2,10 @@
 	"name": "mysql_table",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureMySql",
+			"referenceName": "azmysql",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"host_name": {
+				"hostName": {
 					"value": "@dataset().hostName",
 					"type": "Expression"
 				},
@@ -13,12 +13,16 @@
 					"value": "@dataset().port",
 					"type": "Expression"
 				},
-				"database_name": {
+				"databaseName": {
 					"value": "@dataset().databaseName",
 					"type": "Expression"
 				},
-				"user_name": {
+				"userName": {
 					"value": "@dataset().userName",
+					"type": "Expression"
+				},
+				"secretNamePassword": {
+					"value": "@dataset().secretNamePassword",
 					"type": "Expression"
 				}
 			}
@@ -37,6 +41,9 @@
 				"type": "string"
 			},
 			"userName": {
+				"type": "string"
+			},
+			"secretNamePassword": {
 				"type": "string"
 			}
 		},

@@ -138,6 +138,10 @@
 														"url": {
 															"value": "@json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.url",
 															"type": "Expression"
+														},
+														"secretNamePassword": {
+															"value": "@json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.config.secretNamePassword",
+															"type": "Expression"
 														}
 													}
 												}

@@ -62,6 +62,10 @@
 							"userName": {
 								"value": "@pipeline().parameters.userName",
 								"type": "Expression"
+							},
+							"secretNamePassword": {
+								"value": "@pipeline().parameters.secretNamePassword",
+								"type": "Expression"
 							}
 						}
 					}
@@ -118,6 +122,9 @@
 				"type": "string"
 			},
 			"url": {
+				"type": "string"
+			},
+			"secretNamePassword": {
 				"type": "string"
 			}
 		},
