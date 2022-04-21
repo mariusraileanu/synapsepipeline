@@ -103,6 +103,23 @@
 									"pipelineName": {
 										"value": "@item().name",
 										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@item().config.fileName",
+										"type": "Expression"
+									},
+									"fileType": "parquet",
+									"silverFilePath": {
+										"value": "@replace(replace(replace(replace(replace(json(activity('Get Pipelines').output.value[0].metadata).silverConnection.config.filePath, '{dataset}', item().config.dataset), '{source}', toLower(json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.connectionType)), 'YYYY', substring(pipeline().parameters.windowStartTime, 0, 4)), 'MM', substring(pipeline().parameters.windowStartTime, 4, 2)), 'DD', substring(pipeline().parameters.windowStartTime, 6, 2))",
+										"type": "Expression"
+									},
+									"silverContainer": {
+										"value": "@json(activity('Get Pipelines').output.value[0].metadata).silverConnection.config.container",
+										"type": "Expression"
+									},
+									"bronzeContainer": {
+										"value": "@json(activity('Get Pipelines').output.value[0].metadata).bronzeConnection.config.container",
+										"type": "Expression"
 									}
 								}
 							},
