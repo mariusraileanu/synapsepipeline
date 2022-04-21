@@ -1,5 +1,5 @@
 {
-	"name": "Metadata Driven Raw to Bronze Pipeline",
+	"name": "Metadata Driven Bronze to Silver Pipeline",
 	"properties": {
 		"activities": [
 			{
@@ -71,14 +71,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@json(activity('Get Pipelines').output.value[0].metadata).loadPipeline",
+						"value": "@json(activity('Get Pipelines').output.value[0].metadata).transformPipeline",
 						"type": "Expression"
 					},
 					"isSequential": false,
 					"batchCount": 50,
 					"activities": [
 						{
-							"name": "Load Data from Raw to Bronze",
+							"name": "Load Data from Bronze to Silver",
 							"type": "DatabricksNotebook",
 							"dependsOn": [],
 							"policy": {
@@ -90,31 +90,18 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Repos/mraileanu@microsoft.com/databricks/ETL Framework/operators/raw_to_bronze",
+								"notebookPath": "/Repos/mraileanu@microsoft.com/databricks/ETL Framework/operators/bronze_to_silver",
 								"baseParameters": {
-									"rawFilePath": {
-										"value": "@replace(replace(replace(replace(replace(json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.filePath, '{dataset}', item().config.dataset), '{source}', toLower(json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.connectionType)), 'YYYY', substring(pipeline().parameters.windowStartTime, 0, 4)), 'MM', substring(pipeline().parameters.windowStartTime, 4, 2)), 'DD', substring(pipeline().parameters.windowStartTime, 6, 2))",
+									"bronzeTableName": {
+										"value": "@item().config.bronzeTableName",
 										"type": "Expression"
 									},
-									"bronzeFilePath": {
-										"value": "@replace(replace(replace(replace(replace(json(activity('Get Pipelines').output.value[0].metadata).bronzeConnection.config.filePath, '{dataset}', item().config.dataset), '{source}', toLower(json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.connectionType)), 'YYYY', substring(pipeline().parameters.windowStartTime, 0, 4)), 'MM', substring(pipeline().parameters.windowStartTime, 4, 2)), 'DD', substring(pipeline().parameters.windowStartTime, 6, 2))",
-										"type": "Expression"
-									},
-									"fileName": {
-										"value": "@item().config.fileName",
-										"type": "Expression"
-									},
-									"fileType": "parquet",
-									"tableName": {
+									"silverTableName": {
 										"value": "@item().config.tableName",
 										"type": "Expression"
 									},
-									"rawContainer": {
-										"value": "@json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.container",
-										"type": "Expression"
-									},
-									"bronzeContainer": {
-										"value": "@json(activity('Get Pipelines').output.value[0].metadata).bronzeConnection.config.container",
+									"pipelineName": {
+										"value": "@item().name",
 										"type": "Expression"
 									}
 								}
@@ -164,10 +151,7 @@
 				"type": "string"
 			}
 		},
-		"annotations": [
-			"procfwk",
-			"Child"
-		],
+		"annotations": [],
 		"lastPublishTime": "2022-04-08T11:53:19Z"
 	},
 	"type": "Microsoft.Synapse/workspaces/pipelines"

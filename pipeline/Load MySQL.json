@@ -28,7 +28,8 @@
 		],
 		"parameters": {
 			"windowStartTime": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "20220421"
 			}
 		},
 		"folder": {
