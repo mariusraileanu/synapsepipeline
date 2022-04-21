@@ -87,6 +87,52 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Metadata Driven Bronze to Silver Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Metadata Driven Raw to Bronze Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Metadata Driven Bronze to Silver Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"jobName": {
+							"value": "@pipeline().parameters.jobName",
+							"type": "Expression"
+						},
+						"windowStartTime": {
+							"value": "@pipeline().parameters.windowStartTime",
+							"type": "Expression"
+						},
+						"serverName": {
+							"value": "@pipeline().parameters.serverName",
+							"type": "Expression"
+						},
+						"databaseName": {
+							"value": "@pipeline().parameters.databaseName",
+							"type": "Expression"
+						},
+						"userName": {
+							"value": "@pipeline().parameters.userName",
+							"type": "Expression"
+						},
+						"secretNamePassword": {
+							"value": "@pipeline().parameters.secretNamePassword",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"parameters": {
