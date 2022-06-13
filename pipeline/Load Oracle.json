@@ -1,0 +1,42 @@
+{
+	"name": "Load Oracle",
+	"properties": {
+		"activities": [
+			{
+				"name": "Metadata Driven Master Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Metadata Driven Master Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"jobName": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"windowStartTime": {
+							"value": "@pipeline().parameters.windowStartTime",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"windowStartTime": {
+				"type": "string",
+				"defaultValue": "20220421"
+			}
+		},
+		"folder": {
+			"name": "jobs"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-07T09:38:40Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}
