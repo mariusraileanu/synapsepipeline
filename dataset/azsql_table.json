@@ -37,10 +37,12 @@
 				"type": "string"
 			},
 			"tableName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "na"
 			},
 			"schemaName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "na"
 			}
 		},
 		"annotations": [],
