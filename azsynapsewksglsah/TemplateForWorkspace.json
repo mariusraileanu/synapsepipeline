@@ -1573,36 +1573,20 @@
 								"dependencyConditions": [
 									"Failed"
 								]
+							},
+							{
+								"activity": "Metadata Driven Raw to Bronze Pipeline",
+								"dependencyConditions": [
+									"Failed"
+								]
+							},
+							{
+								"activity": "Metadata Driven Bronze to Silver Pipeline",
+								"dependencyConditions": [
+									"Failed"
+								]
 							}
 						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Send Teams Channel Notification",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Send Teams Channel Notification1",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Send Teams Channel Notification",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Send Teams Channel Notification2",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
