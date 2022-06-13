@@ -147,6 +147,96 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "sql",
+										"activities": [
+											{
+												"name": "Copy Data from SQL to ADLS",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Copy Data from SQL to ADLS",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "sftp",
+										"activities": [
+											{
+												"name": "Copy Data from SFTP to ADLS",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Copy Data from SFTP to ADLS",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "rest",
+										"activities": [
+											{
+												"name": "Copy Data from REST to ADLS",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Copy Data from REST to ADLS",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "sap",
+										"activities": [
+											{
+												"name": "Copy Data from SAP to ADLS",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Copy Data from SAP to ADLS",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "oracle",
+										"activities": [
+											{
+												"name": "Copy Data from Oracle to ADLS",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "Copy Data from Oracle to ADLS",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									}
 								]
 							}

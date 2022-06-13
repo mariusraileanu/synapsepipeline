@@ -1,9 +1,9 @@
 {
-	"name": "Copy Data from SFTP to ADLS",
+	"name": "Copy Data from REST to ADLS",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data from SFTP to ADLS",
+				"name": "Copy Data from REST to ADLS",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {

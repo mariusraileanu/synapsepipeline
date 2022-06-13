@@ -1,9 +1,9 @@
 {
-	"name": "Copy Data from SFTP to ADLS",
+	"name": "Copy Data from Oracle to ADLS",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data from SFTP to ADLS",
+				"name": "Copy Data from Oracle to ADLS",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,8 +16,9 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureMySqlSource",
-						"queryTimeout": "02:00:00"
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "ParquetSink",
@@ -40,19 +41,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "mysql_table",
+						"referenceName": "azsql_table",
 						"type": "DatasetReference",
 						"parameters": {
-							"tableName": {
-								"value": "@pipeline().parameters.tableName",
-								"type": "Expression"
-							},
-							"hostName": {
-								"value": "@pipeline().parameters.hostName",
-								"type": "Expression"
-							},
-							"port": {
-								"value": "@pipeline().parameters.port",
+							"serverName": {
+								"value": "@pipeline().parameters.serverName",
 								"type": "Expression"
 							},
 							"databaseName": {
@@ -66,7 +59,12 @@
 							"secretNamePassword": {
 								"value": "@pipeline().parameters.secretNamePassword",
 								"type": "Expression"
-							}
+							},
+							"tableName": {
+								"value": "@pipeline().parameters.tableName",
+								"type": "Expression"
+							},
+							"schemaName": "na"
 						}
 					}
 				],
@@ -109,10 +107,7 @@
 			"fileName": {
 				"type": "string"
 			},
-			"hostName": {
-				"type": "string"
-			},
-			"port": {
+			"serverName": {
 				"type": "string"
 			},
 			"databaseName": {
