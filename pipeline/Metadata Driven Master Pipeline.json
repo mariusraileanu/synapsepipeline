@@ -135,7 +135,7 @@
 				}
 			},
 			{
-				"name": "Send Teams Channel Notification Source to Raw",
+				"name": "Send Teams Channel Notification",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -143,41 +143,13 @@
 						"dependencyConditions": [
 							"Failed"
 						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Send Teams Channel Notification",
-						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "Send Teams Channel Notification Raw to Bronze",
-				"type": "ExecutePipeline",
-				"dependsOn": [
 					{
 						"activity": "Metadata Driven Raw to Bronze Pipeline",
 						"dependencyConditions": [
 							"Failed"
 						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Send Teams Channel Notification",
-						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "Send Teams Channel Notification Bronze to Silver",
-				"type": "ExecutePipeline",
-				"dependsOn": [
 					{
 						"activity": "Metadata Driven Bronze to Silver Pipeline",
 						"dependencyConditions": [
