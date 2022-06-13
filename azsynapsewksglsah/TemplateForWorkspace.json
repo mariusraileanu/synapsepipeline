@@ -224,13 +224,444 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Copy Data from Oracle to ADLS')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Data from Oracle to ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "azsql_table",
+								"type": "DatasetReference",
+								"parameters": {
+									"serverName": {
+										"value": "@pipeline().parameters.serverName",
+										"type": "Expression"
+									},
+									"databaseName": {
+										"value": "@pipeline().parameters.databaseName",
+										"type": "Expression"
+									},
+									"userName": {
+										"value": "@pipeline().parameters.userName",
+										"type": "Expression"
+									},
+									"secretNamePassword": {
+										"value": "@pipeline().parameters.secretNamePassword",
+										"type": "Expression"
+									},
+									"tableName": {
+										"value": "@pipeline().parameters.tableName",
+										"type": "Expression"
+									},
+									"schemaName": "na"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "adls_parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": {
+										"value": "@pipeline().parameters.container",
+										"type": "Expression"
+									},
+									"filePath": {
+										"value": "@pipeline().parameters.filePath",
+										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@pipeline().parameters.fileName",
+										"type": "Expression"
+									},
+									"url": {
+										"value": "@pipeline().parameters.url",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"tableName": {
+						"type": "string"
+					},
+					"container": {
+						"type": "string"
+					},
+					"filePath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					},
+					"serverName": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "operator"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-03-24T13:04:55Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/azsql_table')]",
+				"[concat(variables('workspaceId'), '/datasets/adls_parquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Copy Data from REST to ADLS')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Data from REST to ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "mysql_table",
+								"type": "DatasetReference",
+								"parameters": {
+									"tableName": {
+										"value": "@pipeline().parameters.tableName",
+										"type": "Expression"
+									},
+									"hostName": {
+										"value": "@pipeline().parameters.hostName",
+										"type": "Expression"
+									},
+									"port": {
+										"value": "@pipeline().parameters.port",
+										"type": "Expression"
+									},
+									"databaseName": {
+										"value": "@pipeline().parameters.databaseName",
+										"type": "Expression"
+									},
+									"userName": {
+										"value": "@pipeline().parameters.userName",
+										"type": "Expression"
+									},
+									"secretNamePassword": {
+										"value": "@pipeline().parameters.secretNamePassword",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "adls_parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": {
+										"value": "@pipeline().parameters.container",
+										"type": "Expression"
+									},
+									"filePath": {
+										"value": "@pipeline().parameters.filePath",
+										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@pipeline().parameters.fileName",
+										"type": "Expression"
+									},
+									"url": {
+										"value": "@pipeline().parameters.url",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"tableName": {
+						"type": "string"
+					},
+					"container": {
+						"type": "string"
+					},
+					"filePath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					},
+					"hostName": {
+						"type": "string"
+					},
+					"port": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "operator"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-03-24T13:04:55Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/mysql_table')]",
+				"[concat(variables('workspaceId'), '/datasets/adls_parquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Copy Data from SAP to ADLS')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Data from SAP to ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "azsql_table",
+								"type": "DatasetReference",
+								"parameters": {
+									"serverName": {
+										"value": "@pipeline().parameters.serverName",
+										"type": "Expression"
+									},
+									"databaseName": {
+										"value": "@pipeline().parameters.databaseName",
+										"type": "Expression"
+									},
+									"userName": {
+										"value": "@pipeline().parameters.userName",
+										"type": "Expression"
+									},
+									"secretNamePassword": {
+										"value": "@pipeline().parameters.secretNamePassword",
+										"type": "Expression"
+									},
+									"tableName": {
+										"value": "@pipeline().parameters.tableName",
+										"type": "Expression"
+									},
+									"schemaName": "na"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "adls_parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": {
+										"value": "@pipeline().parameters.container",
+										"type": "Expression"
+									},
+									"filePath": {
+										"value": "@pipeline().parameters.filePath",
+										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@pipeline().parameters.fileName",
+										"type": "Expression"
+									},
+									"url": {
+										"value": "@pipeline().parameters.url",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"tableName": {
+						"type": "string"
+					},
+					"container": {
+						"type": "string"
+					},
+					"filePath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					},
+					"serverName": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "operator"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-03-24T13:04:55Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/azsql_table')]",
+				"[concat(variables('workspaceId'), '/datasets/adls_parquet')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Copy Data from SFTP to ADLS')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy data from MySQL to ADLS",
+						"name": "Copy Data from SFTP to ADLS",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1260,6 +1691,101 @@
 														}
 													}
 												]
+											},
+											{
+												"value": "sql",
+												"activities": [
+													{
+														"name": "Copy Data from SQL to ADLS",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "Copy Data from SQL to ADLS",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "sftp",
+												"activities": [
+													{
+														"name": "Copy Data from SFTP to ADLS",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "Copy Data from SFTP to ADLS",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "rest",
+												"activities": [
+													{
+														"name": "Copy Data from REST to ADLS",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "Copy Data from REST to ADLS",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "sap",
+												"activities": [
+													{
+														"name": "Copy Data from SAP to ADLS",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "Copy Data from SAP to ADLS",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "oracle",
+												"activities": [
+													{
+														"name": "Copy Data from Oracle to ADLS",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "Copy Data from Oracle to ADLS",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
 											}
 										]
 									}
@@ -1302,7 +1828,12 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/datasets/azsql_table')]",
-				"[concat(variables('workspaceId'), '/pipelines/Copy Data from MySQL to ADLS')]"
+				"[concat(variables('workspaceId'), '/pipelines/Copy Data from MySQL to ADLS')]",
+				"[concat(variables('workspaceId'), '/pipelines/Copy Data from SQL to ADLS')]",
+				"[concat(variables('workspaceId'), '/pipelines/Copy Data from SFTP to ADLS')]",
+				"[concat(variables('workspaceId'), '/pipelines/Copy Data from REST to ADLS')]",
+				"[concat(variables('workspaceId'), '/pipelines/Copy Data from SAP to ADLS')]",
+				"[concat(variables('workspaceId'), '/pipelines/Copy Data from Oracle to ADLS')]"
 			]
 		},
 		{
