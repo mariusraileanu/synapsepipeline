@@ -8,19 +8,16 @@
 		"AzureDatabricks_accessToken": {
 			"value": ""
 		},
-		"AzureMySql_connectionString": {
+		"azmysql_connectionString": {
+			"value": ""
+		},
+		"azsqlserver_connectionString": {
 			"value": ""
 		},
 		"azsynapsewksglsah-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
 		"linkedServiceMetadata_connectionString": {
-			"value": ""
-		},
-		"azsqlserver_connectionString": {
-			"value": ""
-		},
-		"azmysql_connectionString": {
 			"value": ""
 		},
 		"FrameworkFunctions_properties_typeProperties_functionAppUrl": {

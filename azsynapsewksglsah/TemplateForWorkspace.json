@@ -11,9 +11,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks'"
 		},
-		"AzureMySql_connectionString": {
+		"azmysql_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureMySql'"
+			"metadata": "Secure string for 'connectionString' of 'azmysql'"
+		},
+		"azsqlserver_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'azsqlserver'"
 		},
 		"azsynapsewksglsah-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
@@ -22,14 +26,6 @@
 		"linkedServiceMetadata_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedServiceMetadata'"
-		},
-		"azsqlserver_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'azsqlserver'"
-		},
-		"azmysql_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'azmysql'"
 		},
 		"FrameworkFunctions_properties_typeProperties_functionAppUrl": {
 			"type": "string",
@@ -228,6 +224,294 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Copy Data from SFTP to ADLS')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data from MySQL to ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "mysql_table",
+								"type": "DatasetReference",
+								"parameters": {
+									"tableName": {
+										"value": "@pipeline().parameters.tableName",
+										"type": "Expression"
+									},
+									"hostName": {
+										"value": "@pipeline().parameters.hostName",
+										"type": "Expression"
+									},
+									"port": {
+										"value": "@pipeline().parameters.port",
+										"type": "Expression"
+									},
+									"databaseName": {
+										"value": "@pipeline().parameters.databaseName",
+										"type": "Expression"
+									},
+									"userName": {
+										"value": "@pipeline().parameters.userName",
+										"type": "Expression"
+									},
+									"secretNamePassword": {
+										"value": "@pipeline().parameters.secretNamePassword",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "adls_parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": {
+										"value": "@pipeline().parameters.container",
+										"type": "Expression"
+									},
+									"filePath": {
+										"value": "@pipeline().parameters.filePath",
+										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@pipeline().parameters.fileName",
+										"type": "Expression"
+									},
+									"url": {
+										"value": "@pipeline().parameters.url",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"tableName": {
+						"type": "string"
+					},
+					"container": {
+						"type": "string"
+					},
+					"filePath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					},
+					"hostName": {
+						"type": "string"
+					},
+					"port": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "operator"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-03-24T13:04:55Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/mysql_table')]",
+				"[concat(variables('workspaceId'), '/datasets/adls_parquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Copy Data from SQL to ADLS')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data from SQL to ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "azsql_table",
+								"type": "DatasetReference",
+								"parameters": {
+									"serverName": {
+										"value": "@pipeline().parameters.serverName",
+										"type": "Expression"
+									},
+									"databaseName": {
+										"value": "@pipeline().parameters.databaseName",
+										"type": "Expression"
+									},
+									"userName": {
+										"value": "@pipeline().parameters.userName",
+										"type": "Expression"
+									},
+									"secretNamePassword": {
+										"value": "@pipeline().parameters.secretNamePassword",
+										"type": "Expression"
+									},
+									"tableName": {
+										"value": "@pipeline().parameters.tableName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "adls_parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": {
+										"value": "@pipeline().parameters.container",
+										"type": "Expression"
+									},
+									"filePath": {
+										"value": "@pipeline().parameters.filePath",
+										"type": "Expression"
+									},
+									"fileName": {
+										"value": "@pipeline().parameters.fileName",
+										"type": "Expression"
+									},
+									"url": {
+										"value": "@pipeline().parameters.url",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"tableName": {
+						"type": "string"
+					},
+					"container": {
+						"type": "string"
+					},
+					"filePath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					},
+					"serverName": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "operator"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-03-24T13:04:55Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/azsql_table')]",
+				"[concat(variables('workspaceId'), '/datasets/adls_parquet')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Load MySQL')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
@@ -263,7 +547,8 @@
 				},
 				"parameters": {
 					"windowStartTime": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "20220421"
 					}
 				},
 				"folder": {
@@ -274,6 +559,190 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Master Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Metadata Driven Bronze to Silver Pipeline')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Pipelines",
+						"description": "Returns all pipelines from the metadata to be executed within a given processing stage.",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[dbo].[get_job_metadata]",
+								"storedProcedureParameters": {
+									"jobName": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.jobName",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "azsql_table",
+								"type": "DatasetReference",
+								"parameters": {
+									"serverName": {
+										"value": "@pipeline().parameters.serverName",
+										"type": "Expression"
+									},
+									"databaseName": {
+										"value": "@pipeline().parameters.databaseName",
+										"type": "Expression"
+									},
+									"userName": {
+										"value": "@pipeline().parameters.userName",
+										"type": "Expression"
+									},
+									"secretNamePassword": {
+										"value": "@pipeline().parameters.secretNamePassword",
+										"type": "Expression"
+									}
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Execute Pipelines",
+						"description": "Second level ForEach to run in parallel all pipelines within the stage. Items for iteration passed from the Get Pipelines lookup activity.",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Pipelines",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@json(activity('Get Pipelines').output.value[0].metadata).transformPipeline",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 50,
+							"activities": [
+								{
+									"name": "Load Data from Bronze to Silver",
+									"type": "DatabricksNotebook",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"notebookPath": "/Repos/mraileanu@microsoft.com/databricks/ETL Framework/operators/bronze_to_silver",
+										"baseParameters": {
+											"bronzeTableName": {
+												"value": "@item().config.bronzeTableName",
+												"type": "Expression"
+											},
+											"silverTableName": {
+												"value": "@item().config.tableName",
+												"type": "Expression"
+											},
+											"pipelineName": {
+												"value": "@item().name",
+												"type": "Expression"
+											},
+											"fileName": {
+												"value": "@item().config.fileName",
+												"type": "Expression"
+											},
+											"fileType": "parquet",
+											"silverFilePath": {
+												"value": "@replace(replace(replace(replace(replace(json(activity('Get Pipelines').output.value[0].metadata).silverConnection.config.filePath, '{dataset}', item().config.dataset), '{source}', toLower(json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.connectionType)), 'YYYY', substring(pipeline().parameters.windowStartTime, 0, 4)), 'MM', substring(pipeline().parameters.windowStartTime, 4, 2)), 'DD', substring(pipeline().parameters.windowStartTime, 6, 2))",
+												"type": "Expression"
+											},
+											"silverContainer": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).silverConnection.config.container",
+												"type": "Expression"
+											},
+											"bronzeContainer": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).bronzeConnection.config.container",
+												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "azdatabricks",
+										"type": "LinkedServiceReference",
+										"parameters": {
+											"databricksWorskpaceURL": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).databricksConnection.config.databricksWorskpaceURL",
+												"type": "Expression"
+											},
+											"secretNameDatabricksToken": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).databricksConnection.config.secretNameDatabricksToken",
+												"type": "Expression"
+											},
+											"databricksClusterID": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).databricksConnection.config.databricksClusterID",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"jobName": {
+						"type": "string",
+						"defaultValue": "Load MySQL"
+					},
+					"windowStartTime": {
+						"type": "string",
+						"defaultValue": "20220706"
+					},
+					"serverName": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-08T11:53:19Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/azsql_table')]",
+				"[concat(variables('workspaceId'), '/linkedServices/azdatabricks')]"
 			]
 		},
 		{
@@ -367,6 +836,52 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "Metadata Driven Bronze to Silver Pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Metadata Driven Raw to Bronze Pipeline",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Metadata Driven Bronze to Silver Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"jobName": {
+									"value": "@pipeline().parameters.jobName",
+									"type": "Expression"
+								},
+								"windowStartTime": {
+									"value": "@pipeline().parameters.windowStartTime",
+									"type": "Expression"
+								},
+								"serverName": {
+									"value": "@pipeline().parameters.serverName",
+									"type": "Expression"
+								},
+								"databaseName": {
+									"value": "@pipeline().parameters.databaseName",
+									"type": "Expression"
+								},
+								"userName": {
+									"value": "@pipeline().parameters.userName",
+									"type": "Expression"
+								},
+								"secretNamePassword": {
+									"value": "@pipeline().parameters.secretNamePassword",
+									"type": "Expression"
+								}
+							}
+						}
 					}
 				],
 				"policy": {
@@ -407,7 +922,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Source to Raw Pipeline')]",
-				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Raw to Bronze Pipeline')]"
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Raw to Bronze Pipeline')]",
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Bronze to Silver Pipeline')]"
 			]
 		},
 		{
@@ -504,7 +1020,7 @@
 									},
 									"userProperties": [],
 									"typeProperties": {
-										"notebookPath": "/ETL Framework/operators/raw_to_bronze",
+										"notebookPath": "/Repos/mraileanu@microsoft.com/databricks/ETL Framework/operators/raw_to_bronze",
 										"baseParameters": {
 											"rawFilePath": {
 												"value": "@replace(replace(replace(replace(replace(json(activity('Get Pipelines').output.value[0].metadata).rawConnection.config.filePath, '{dataset}', item().config.dataset), '{source}', toLower(json(activity('Get Pipelines').output.value[0].metadata).sourceConnection.connectionType)), 'YYYY', substring(pipeline().parameters.windowStartTime, 0, 4)), 'MM', substring(pipeline().parameters.windowStartTime, 4, 2)), 'DD', substring(pipeline().parameters.windowStartTime, 6, 2))",
@@ -534,11 +1050,21 @@
 										}
 									},
 									"linkedServiceName": {
-										"referenceName": "AzureDatabricks",
+										"referenceName": "azdatabricks",
 										"type": "LinkedServiceReference",
 										"parameters": {
-											"clusterNodeType": "Standard_E8d_v4",
-											"workers": "1"
+											"databricksWorskpaceURL": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).databricksConnection.config.databricksWorskpaceURL",
+												"type": "Expression"
+											},
+											"secretNameDatabricksToken": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).databricksConnection.config.secretNameDatabricksToken",
+												"type": "Expression"
+											},
+											"databricksClusterID": {
+												"value": "@json(activity('Get Pipelines').output.value[0].metadata).databricksConnection.config.databricksClusterID",
+												"type": "Expression"
+											}
 										}
 									}
 								}
@@ -580,7 +1106,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/datasets/azsql_table')]",
-				"[concat(variables('workspaceId'), '/linkedServices/AzureDatabricks')]"
+				"[concat(variables('workspaceId'), '/linkedServices/azdatabricks')]"
 			]
 		},
 		{
@@ -1138,6 +1664,73 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/azsql_table')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "azsqlserver",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"serverName": {
+							"value": "@dataset().serverName",
+							"type": "Expression"
+						},
+						"databaseName": {
+							"value": "@dataset().databaseName",
+							"type": "Expression"
+						},
+						"userName": {
+							"value": "@dataset().userName",
+							"type": "Expression"
+						},
+						"secretNamePassword": {
+							"value": "@dataset().secretNamePassword",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"serverName": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					},
+					"tableName": {
+						"type": "string",
+						"defaultValue": "na"
+					},
+					"schemaName": {
+						"type": "string",
+						"defaultValue": "na"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().tableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/azsqlserver')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/mysql_table')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
@@ -1237,39 +1830,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/AzureMySql')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"parameters": {
-					"host_name": {
-						"type": "string"
-					},
-					"port": {
-						"type": "string"
-					},
-					"database_name": {
-						"type": "string"
-					},
-					"user_name": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureMySql",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureMySql_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/FrameworkFunctions')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -1352,6 +1912,49 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/azdatabricks')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"databricksWorskpaceURL": {
+						"type": "string"
+					},
+					"secretNameDatabricksToken": {
+						"type": "string"
+					},
+					"databricksClusterID": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "@linkedService().databricksWorskpaceURL",
+					"accessToken": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "azkeyvaultglsah",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": {
+							"value": "@linkedService().secretNameDatabricksToken",
+							"type": "Expression"
+						}
+					},
+					"existingClusterId": "@linkedService().databricksClusterID"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/azkeyvaultglsah')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/azkeyvaultglsah')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -1387,6 +1990,54 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/azmysql')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"hostName": {
+						"type": "string"
+					},
+					"port": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureMySql",
+				"typeProperties": {
+					"connectionString": "[parameters('azmysql_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "azkeyvaultglsah",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": {
+							"value": "@linkedService().secretNamePassword",
+							"type": "Expression"
+						}
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/azkeyvaultglsah')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/azrawdatalakeglsah')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -1408,6 +2059,51 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/azsqlserver')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"serverName": {
+						"type": "string"
+					},
+					"databaseName": {
+						"type": "string"
+					},
+					"userName": {
+						"type": "string"
+					},
+					"secretNamePassword": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('azsqlserver_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "azkeyvaultglsah",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": {
+							"value": "@linkedService().secretNamePassword",
+							"type": "Expression"
+						}
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/azkeyvaultglsah')]"
 			]
 		},
 		{
@@ -1647,149 +2343,6 @@
 			},
 			"dependsOn": [],
 			"location": "centralindia"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/azsqlserver')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"parameters": {
-					"serverName": {
-						"type": "string"
-					},
-					"databaseName": {
-						"type": "string"
-					},
-					"userName": {
-						"type": "string"
-					},
-					"secretNamePassword": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('azsqlserver_connectionString')]",
-					"password": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "azkeyvaultglsah",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": {
-							"value": "@linkedService().secretNamePassword",
-							"type": "Expression"
-						}
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('workspaceId'), '/linkedServices/azkeyvaultglsah')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/azsql_table')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "azsqlserver",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"serverName": {
-							"value": "@dataset().serverName",
-							"type": "Expression"
-						},
-						"databaseName": {
-							"value": "@dataset().databaseName",
-							"type": "Expression"
-						},
-						"userName": {
-							"value": "@dataset().userName",
-							"type": "Expression"
-						},
-						"secretNamePassword": {
-							"value": "@dataset().secretNamePassword",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"serverName": {
-						"type": "string"
-					},
-					"databaseName": {
-						"type": "string"
-					},
-					"userName": {
-						"type": "string"
-					},
-					"secretNamePassword": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/azsqlserver')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/azmysql')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"parameters": {
-					"hostName": {
-						"type": "string"
-					},
-					"port": {
-						"type": "string"
-					},
-					"databaseName": {
-						"type": "string"
-					},
-					"userName": {
-						"type": "string"
-					},
-					"secretNamePassword": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureMySql",
-				"typeProperties": {
-					"connectionString": "[parameters('azmysql_connectionString')]",
-					"password": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "azkeyvaultglsah",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": {
-							"value": "@linkedService().secretNamePassword",
-							"type": "Expression"
-						}
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('workspaceId'), '/linkedServices/azkeyvaultglsah')]"
-			]
 		}
 	]
 }
