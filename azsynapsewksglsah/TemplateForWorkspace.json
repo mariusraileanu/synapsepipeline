@@ -993,6 +993,256 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/Load Oracle')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Metadata Driven Master Pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Metadata Driven Master Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"jobName": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"windowStartTime": {
+									"value": "@pipeline().parameters.windowStartTime",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"windowStartTime": {
+						"type": "string",
+						"defaultValue": "20220421"
+					}
+				},
+				"folder": {
+					"name": "jobs"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-07T09:38:40Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Master Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Load REST')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Metadata Driven Master Pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Metadata Driven Master Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"jobName": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"windowStartTime": {
+									"value": "@pipeline().parameters.windowStartTime",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"windowStartTime": {
+						"type": "string",
+						"defaultValue": "20220421"
+					}
+				},
+				"folder": {
+					"name": "jobs"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-07T09:38:40Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Master Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Load SAP')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Metadata Driven Master Pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Metadata Driven Master Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"jobName": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"windowStartTime": {
+									"value": "@pipeline().parameters.windowStartTime",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"windowStartTime": {
+						"type": "string",
+						"defaultValue": "20220421"
+					}
+				},
+				"folder": {
+					"name": "jobs"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-07T09:38:40Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Master Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Load SFTP')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Metadata Driven Master Pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Metadata Driven Master Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"jobName": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"windowStartTime": {
+									"value": "@pipeline().parameters.windowStartTime",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"windowStartTime": {
+						"type": "string",
+						"defaultValue": "20220421"
+					}
+				},
+				"folder": {
+					"name": "jobs"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-07T09:38:40Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Master Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Load SQL')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Metadata Driven Master Pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Metadata Driven Master Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"jobName": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"windowStartTime": {
+									"value": "@pipeline().parameters.windowStartTime",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"windowStartTime": {
+						"type": "string",
+						"defaultValue": "20220421"
+					}
+				},
+				"folder": {
+					"name": "jobs"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-04-07T09:38:40Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Master Pipeline')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Metadata Driven Bronze to Silver Pipeline')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
@@ -1313,6 +1563,55 @@
 								}
 							}
 						}
+					},
+					{
+						"name": "Send Teams Channel Notification",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Metadata Driven Source to Raw Pipeline",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Send Teams Channel Notification",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Send Teams Channel Notification1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Send Teams Channel Notification",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Send Teams Channel Notification2",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Send Teams Channel Notification",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -1354,7 +1653,8 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Source to Raw Pipeline')]",
 				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Raw to Bronze Pipeline')]",
-				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Bronze to Silver Pipeline')]"
+				"[concat(variables('workspaceId'), '/pipelines/Metadata Driven Bronze to Silver Pipeline')]",
+				"[concat(variables('workspaceId'), '/pipelines/Send Teams Channel Notification')]"
 			]
 		},
 		{
