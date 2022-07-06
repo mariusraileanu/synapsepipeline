@@ -16,13 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
-						"requestInterval": "00.00:00:00.010",
-						"requestMethod": "GET",
-						"additionalHeaders": {
-							"Content-Type": "application/xml; charset=UTF-8"
-						}
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
 					},
 					"sink": {
 						"type": "ParquetSink",
@@ -33,14 +28,45 @@
 							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
-						"referenceName": "rest_resource",
+						"referenceName": "mysql_table",
 						"type": "DatasetReference",
 						"parameters": {
-							"baseUrl": "https://www.dubaipulse.gov.ae/dataset/e33b1838-394b-46b6-b0c3-1f65dc07ce73/resource/8fd7e305-158b-4b4f-a4c2-a3603c2d1c94/download/drivers_registration_summary_2022-06-20_00-00-00.csv"
+							"tableName": {
+								"value": "@pipeline().parameters.tableName",
+								"type": "Expression"
+							},
+							"hostName": {
+								"value": "@pipeline().parameters.hostName",
+								"type": "Expression"
+							},
+							"port": {
+								"value": "@pipeline().parameters.port",
+								"type": "Expression"
+							},
+							"databaseName": {
+								"value": "@pipeline().parameters.databaseName",
+								"type": "Expression"
+							},
+							"userName": {
+								"value": "@pipeline().parameters.userName",
+								"type": "Expression"
+							},
+							"secretNamePassword": {
+								"value": "@pipeline().parameters.secretNamePassword",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -68,30 +94,12 @@
 						}
 					}
 				]
-			},
-			{
-				"name": "Web1",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://www.dubaipulse.gov.ae/dataset/e33b1838-394b-46b6-b0c3-1f65dc07ce73/resource/8fd7e305-158b-4b4f-a4c2-a3603c2d1c94/download/drivers_registration_summary_2022-06-20_00-00-00.csv",
-					"connectVia": {
-						"referenceName": "AutoResolveIntegrationRuntime",
-						"type": "IntegrationRuntimeReference"
-					},
-					"method": "GET"
-				}
 			}
 		],
 		"parameters": {
+			"tableName": {
+				"type": "string"
+			},
 			"container": {
 				"type": "string"
 			},
@@ -101,7 +109,22 @@
 			"fileName": {
 				"type": "string"
 			},
+			"hostName": {
+				"type": "string"
+			},
+			"port": {
+				"type": "string"
+			},
+			"databaseName": {
+				"type": "string"
+			},
+			"userName": {
+				"type": "string"
+			},
 			"url": {
+				"type": "string"
+			},
+			"secretNamePassword": {
 				"type": "string"
 			}
 		},
