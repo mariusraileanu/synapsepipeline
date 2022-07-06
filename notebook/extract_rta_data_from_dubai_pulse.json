@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ee331144-eb22-4321-85bf-4ff41c860560"
+				"spark.autotune.trackingId": "12bba11a-a07f-4044-a439-c55e4c0c2113"
 			}
 		},
 		"metadata": {
@@ -41,8 +41,8 @@
 				},
 				"sparkVersion": "3.1",
 				"nodeCount": 3,
-				"cores": 4,
-				"memory": 28,
+				"cores": 8,
+				"memory": 56,
 				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
@@ -80,6 +80,7 @@
 					}
 				},
 				"source": [
+					"\r\n",
 					"import requests\r\n",
 					"import pandas as pd\r\n",
 					"import io\r\n",
@@ -89,7 +90,10 @@
 					"response = requests.get(url)\r\n",
 					"response.encoding = 'utf-8' # Optional: requests infers this internally\r\n",
 					"r = response.text\r\n",
-					"df = pd.read_csv(io.StringIO(r))"
+					"pdf = pd.read_csv(io.StringIO(r))\r\n",
+					"pdf = pd.read_csv(io.StringIO(r))\r\n",
+					"df = spark.createDataFrame(pdf)\r\n",
+					"df.write.format(\"delta\").mode(\"overwrite\").partitionBy(\"date\").save(\"abfss://bronze@azrawdatalakeglsah.dfs.core.windows.net/data/source=rta/dataset=drivers-registration-summary\")"
 				],
 				"execution_count": 5
 			},
@@ -107,9 +111,92 @@
 					}
 				},
 				"source": [
-					"df"
+					"import requests\r\n",
+					"import pandas as pd\r\n",
+					"import io\r\n",
+					"from pyspark.sql.types import *\r\n",
+					"\r\n",
+					"url = \"https://www.dubaipulse.gov.ae/dataset/c99b0b9a-4af8-4496-8fc5-f214b3c2fc51/resource/7a85fbbe-9f04-469a-afbc-e4c72daedd82/download/bus_ridership_2018-03-31_00-00-00.csv\"\r\n",
+					"\r\n",
+					"response = requests.get(url)\r\n",
+					"response.encoding = 'utf-8' # Optional: requests infers this internally\r\n",
+					"r = response.text\r\n",
+					"pdf = pd.read_csv(io.StringIO(r))\r\n",
+					"\r\n",
+					"#create schema for your dataframe\r\n",
+					"schema = StructType([StructField(\"txn_type\", StringType(), True)\\\r\n",
+					"                   ,StructField(\"txn_date\", StringType(), True)\\\r\n",
+					"                   ,StructField(\"txn_time\", StringType(), True)\\\r\n",
+					"                   ,StructField(\"start_location\", StringType(), True)\\\r\n",
+					"                   ,StructField(\"end_location\", StringType(), True)\\\r\n",
+					"                   ,StructField(\"route_name\", StringType(), True)\\\r\n",
+					"                   ,StructField(\"start_zone\", StringType(), True)\\\r\n",
+					"                   ,StructField(\"end_zone\", StringType(), True)])\r\n",
+					"\r\n",
+					"#create spark dataframe using schema\r\n",
+					"df = spark.createDataFrame(pdf,schema=schema)\r\n",
+					"\r\n",
+					"df.write.format(\"delta\").mode(\"overwrite\").save(\"abfss://bronze@azrawdatalakeglsah.dfs.core.windows.net/data/source=rta/dataset=bus-ridership\")"
 				],
 				"execution_count": 17
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"import requests\r\n",
+					"import pandas as pd\r\n",
+					"import io\r\n",
+					"\r\n",
+					"url = \"https://www.dubaipulse.gov.ae/dataset/e7da68a2-9637-4691-968b-10184d446e15/resource/b7f02874-d534-4f01-85af-4b2721e618da/download/taxis_and_number_of_trips_by_carrier_company_month_2022-02-20_00-00-00.csv\"\r\n",
+					"\r\n",
+					"response = requests.get(url)\r\n",
+					"response.encoding = 'utf-8' # Optional: requests infers this internally\r\n",
+					"r = response.text\r\n",
+					"pdf = pd.read_csv(io.StringIO(r))\r\n",
+					"df = spark.createDataFrame(pdf)\r\n",
+					"df.write.format(\"delta\").mode(\"overwrite\").save(\"abfss://bronze@azrawdatalakeglsah.dfs.core.windows.net/data/source=rta/dataset=taxis-and-trips-by-carrier-company\")"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"import requests\r\n",
+					"import pandas as pd\r\n",
+					"import io\r\n",
+					"\r\n",
+					"url = \"https://www.dubaipulse.gov.ae/dataset/e735f449-0e6c-4602-bcba-da4ee7b77d6a/resource/b9849311-1c17-4606-b4b7-80996d378fa4/download/drivers_population_census.csv\"\r\n",
+					"\r\n",
+					"response = requests.get(url)\r\n",
+					"response.encoding = 'utf-8' # Optional: requests infers this internally\r\n",
+					"r = response.text\r\n",
+					"pdf = pd.read_csv(io.StringIO(r))\r\n",
+					"df = spark.createDataFrame(pdf)\r\n",
+					"df.write.format(\"delta\").mode(\"overwrite\").save(\"abfss://bronze@azrawdatalakeglsah.dfs.core.windows.net/data/source=rta/dataset=drivers-population-census\")"
+				],
+				"execution_count": null
 			}
 		]
 	}
