@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "05a6c0b6-924a-48c6-ad0d-99c6d8835ba6"
+				"spark.autotune.trackingId": "7e330914-534b-45a0-8df0-da5e0b975f83"
 			}
 		},
 		"metadata": {
@@ -41,8 +41,8 @@
 				},
 				"sparkVersion": "3.1",
 				"nodeCount": 3,
-				"cores": 4,
-				"memory": 28,
+				"cores": 8,
+				"memory": 56,
 				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
@@ -92,7 +92,9 @@
 					}
 				},
 				"source": [
-					"table_url = profile_file + \"#rta.default.customer\""
+					"table_url = profile_file + \"#rta.gold.drivers_population_census\"\r\n",
+					"df = spark.read.format(\"deltaSharing\").load(table_url)\r\n",
+					"df.show()"
 				],
 				"execution_count": 7
 			},
@@ -110,10 +112,11 @@
 					}
 				},
 				"source": [
+					"table_url = profile_file + \"#rta.gold.drivers_registration_summary\"\r\n",
 					"df = spark.read.format(\"deltaSharing\").load(table_url)\r\n",
-					"df.count()"
+					"df.show()"
 				],
-				"execution_count": 8
+				"execution_count": 10
 			},
 			{
 				"cell_type": "code",
@@ -129,9 +132,31 @@
 					}
 				},
 				"source": [
+					"table_url = profile_file + \"#rta.gold.bus_ridership\"\r\n",
+					"df = spark.read.format(\"deltaSharing\").load(table_url)\r\n",
 					"df.show()"
 				],
-				"execution_count": 10
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"table_url = profile_file + \"#rta.gold.taxis_and_trips_by_carrier_company\"\r\n",
+					"df = spark.read.format(\"deltaSharing\").load(table_url)\r\n",
+					"df.show()"
+				],
+				"execution_count": null
 			}
 		]
 	}
