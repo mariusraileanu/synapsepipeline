@@ -1,0 +1,24 @@
+{
+	"name": "Retail_mwy",
+	"properties": {
+		"Name": "Retail_mwy",
+		"EntityType": "DATABASE",
+		"Description": "",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Retail\",\"Version\":\"0.1.0\"}}}",
+			"IsSyMSCDMDatabase": true
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://azsynapsewksglsah@azwksdatalakeglsah.dfs.core.windows.net/Retail_mwy",
+			"Properties": {
+				"FormatType": "csv",
+				"LinkedServiceName": "azsynapsewksglsah-WorkspaceDefaultStorage"
+			}
+		}
+	},
+	"type": "DATABASE"
+}
