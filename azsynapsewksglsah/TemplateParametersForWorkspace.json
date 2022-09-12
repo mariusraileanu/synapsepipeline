@@ -5,7 +5,13 @@
 		"workspaceName": {
 			"value": "azsynapsewksglsah"
 		},
+		"AzureBlobStorage_connectionString": {
+			"value": ""
+		},
 		"AzureDatabricks_accessToken": {
+			"value": ""
+		},
+		"AzureDatabricksJC_accessToken": {
 			"value": ""
 		},
 		"azmysql_connectionString": {
@@ -20,8 +26,14 @@
 		"linkedServiceMetadata_connectionString": {
 			"value": ""
 		},
+		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://azrawdatalakeglsah.dfs.core.windows.net/"
+		},
 		"FrameworkFunctions_properties_typeProperties_functionAppUrl": {
 			"value": "https://frameworkfunctions00001.azurewebsites.net"
+		},
+		"RestService_properties_typeProperties_url": {
+			"value": "@{linkedService().baseUrl}"
 		},
 		"azanomalydetectorglsah_properties_typeProperties_subscriptionId": {
 			"value": "fdc33604-09e4-45f1-a48e-46a602d755d4"
