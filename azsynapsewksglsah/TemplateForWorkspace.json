@@ -93,15 +93,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('workspaceName'), '/testautomotivetemplate')]",
-			"type": "Microsoft.Synapse/workspaces/dataMappers",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/C0_testautomotivetemplate')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
