@@ -3943,11 +3943,13 @@
 								"Description": "Business ratios are categorized into 6 categories:\n\n- Sales Ratios\n- Profit Ratios\n- Debt & Capital Ratios\n- Efficiency Ratios\n- Marketing Ratios\n- Investment Ratios",
 								"DisplayFolderInfo": "{\"name\":\"Business Metrics\",\"colorCode\":\"#001D3F\"}",
 								"PrimaryKeys": "BusinessMetricTypeId",
-								"spark.sql.sources.provider": "parquet"
+								"spark.sql.sources.provider": "parquet",
+								"sql:IsAppendOnly": true
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false
+							"IsRewriteEnabled": false,
+							"Partitioning": {}
 						},
 						"Source": {
 							"Type": "SPARK"
