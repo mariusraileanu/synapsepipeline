@@ -65,9 +65,9 @@
 				}
 			],
 			"Format": {
-				"InputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
-				"OutputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
-				"FormatType": "parquet",
+				"InputFormat": "io.delta.hive.DeltaStorageHandler",
+				"OutputFormat": "io.delta.hive.DeltaStorageHandler",
+				"FormatType": "delta",
 				"SerializeLib": "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe",
 				"Properties": {
 					"path": "abfss://raw@azrawdatalakeglsah.dfs.core.windows.net/lake_database/BusinessMetricType",
@@ -95,7 +95,7 @@
 			"Description": "Business ratios are categorized into 6 categories:\n\n- Sales Ratios\n- Profit Ratios\n- Debt & Capital Ratios\n- Efficiency Ratios\n- Marketing Ratios\n- Investment Ratios",
 			"DisplayFolderInfo": "{\"name\":\"Business Metrics\",\"colorCode\":\"#001D3F\"}",
 			"PrimaryKeys": "BusinessMetricTypeId",
-			"spark.sql.sources.provider": "parquet",
+			"spark.sql.sources.provider": "delta",
 			"sql:IsAppendOnly": false
 		},
 		"Retention": 0,
