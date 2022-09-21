@@ -93,6 +93,117 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('workspaceName'), '/testautomotivetemplate')]",
+			"type": "Microsoft.Synapse/workspaces/dataMappers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/C0_testautomotivetemplate')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "testautomotivetemplate_BusinessMetricType_DataFlow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "testautomotivetemplate_BusinessMetricType_DataFlow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"BusinessSource": {},
+									"BusinessMetricTypeSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "testautomotivetemplate"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/dataflows/testautomotivetemplate_BusinessMetricType_DataFlow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/C0_testautomotivetemplate1')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "testautomotivetemplate_BusinessMetricType_DataFlow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "testautomotivetemplate_BusinessMetricType_DataFlow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"BusinessSource": {},
+									"BusinessMetricTypeSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "testautomotivetemplate"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/dataflows/testautomotivetemplate_BusinessMetricType_DataFlow')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Copy Data from MySQL to ADLS')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
@@ -2440,6 +2551,40 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/testautomotivetemplate_StartingPipeline')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "C0_testautomotivetemplate",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "C0_testautomotivetemplate1",
+								"type": "PipelineReference"
+							},
+							"parameters": {}
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "testautomotivetemplate"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/C0_testautomotivetemplate1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/adls_parquet')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
@@ -3239,6 +3384,42 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/testautomotivetemplate_BusinessMetricType_DataFlow')]",
+			"type": "Microsoft.Synapse/workspaces/dataflows",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "testautomotivetemplate"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"linkedService": {
+								"referenceName": "AzureDataLakeStorage",
+								"type": "LinkedServiceReference"
+							},
+							"name": "BusinessSource"
+						}
+					],
+					"sinks": [
+						{
+							"name": "BusinessMetricTypeSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SelectBusinessMetricType"
+						}
+					],
+					"script": "source(output(\n\t\tBusinessMetricTypeId as short,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'raw',\n\tfolderPath: 'data',\n\tfileName: 'BusinessMetricType.csv',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: true) ~> BusinessSource\nBusinessSource select(mapColumn(\n\t\tBusinessMetricTypeId,\n\t\tBusinessMetricTypeName,\n\t\tBusinessMetricTypeDescription\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> SelectBusinessMetricType\nSelectBusinessMetricType sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tstore: 'synapse',\n\tdatabaseType: 'spark',\n\tformat: 'table',\n\tdatabase: 'Automotive_qxf',\n\ttableName: 'BusinessMetricType',\n\tinput(\n\t\tBusinessMetricTypeId as integer,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t)) ~> BusinessMetricTypeSink"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
 			"type": "Microsoft.Synapse/workspaces/credentials",
 			"apiVersion": "2019-06-01-preview",
@@ -3635,6 +3816,151 @@
 						],
 						"outputs": [],
 						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Automotive_qxf')]",
+			"type": "Microsoft.Synapse/workspaces/databases",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"Ddls": [
+					{
+						"ActionType": "CREATE",
+						"OldEntity": null,
+						"NewEntity": {
+							"Name": "Automotive_qxf",
+							"EntityType": "DATABASE",
+							"Description": "",
+							"Origin": {
+								"Type": "SPARK"
+							},
+							"Properties": {
+								"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Automotive\",\"Version\":\"0.1.0\"}}}",
+								"IsSyMSCDMDatabase": true
+							},
+							"Source": {
+								"Provider": "ADLS",
+								"Location": "abfss://raw@azrawdatalakeglsah.dfs.core.windows.net/lake_database",
+								"Properties": {
+									"FormatType": "parquet",
+									"LinkedServiceName": "AzureDataLakeStorage"
+								}
+							}
+						},
+						"Source": {
+							"Type": "SPARK"
+						}
+					},
+					{
+						"ActionType": "CREATE",
+						"OldEntity": null,
+						"NewEntity": {
+							"Name": "BusinessMetricType",
+							"EntityType": "TABLE",
+							"Namespace": {
+								"DatabaseName": "Automotive_qxf"
+							},
+							"Description": "Business ratios are categorized into 6 categories:\n\n- Sales Ratios\n- Profit Ratios\n- Debt & Capital Ratios\n- Efficiency Ratios\n- Marketing Ratios\n- Investment Ratios",
+							"TableType": "EXTERNAL",
+							"Origin": {
+								"Type": "SPARK"
+							},
+							"StorageDescriptor": {
+								"Columns": [
+									{
+										"Name": "BusinessMetricTypeId",
+										"Description": "The unique identifier of a Business Metric Type.",
+										"OriginDataTypeName": {
+											"TypeName": "integer",
+											"IsComplexType": false,
+											"IsNullable": false,
+											"Properties": {
+												"HIVE_TYPE_STRING": "integer"
+											}
+										},
+										"BaseAttributeReference": {
+											"Entity": "BusinessMetricType.cdm.json/BusinessMetricType",
+											"Name": "BusinessMetricTypeId"
+										}
+									},
+									{
+										"Name": "BusinessMetricTypeName",
+										"Description": "The name of a Business Metric Type.",
+										"OriginDataTypeName": {
+											"TypeName": "string",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Length": 128,
+											"Properties": {
+												"HIVE_TYPE_STRING": "string"
+											}
+										},
+										"BaseAttributeReference": {
+											"Entity": "BusinessMetricType.cdm.json/BusinessMetricType",
+											"Name": "BusinessMetricTypeName"
+										}
+									},
+									{
+										"Name": "BusinessMetricTypeDescription",
+										"Description": "The description of a Business Metric Type.",
+										"OriginDataTypeName": {
+											"TypeName": "string",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Length": 512,
+											"Properties": {
+												"HIVE_TYPE_STRING": "string"
+											}
+										},
+										"BaseAttributeReference": {
+											"Entity": "BusinessMetricType.cdm.json/BusinessMetricType",
+											"Name": "BusinessMetricTypeDescription"
+										}
+									}
+								],
+								"Format": {
+									"InputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
+									"OutputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
+									"FormatType": "parquet",
+									"SerializeLib": "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe",
+									"Properties": {
+										"path": "abfss://raw@azrawdatalakeglsah.dfs.core.windows.net/lake_database/BusinessMetricType",
+										"FormatTypeSetToDatabaseDefault": true
+									}
+								},
+								"Source": {
+									"Provider": "ADLS",
+									"Location": "abfss://raw@azrawdatalakeglsah.dfs.core.windows.net/lake_database/BusinessMetricType",
+									"Properties": {
+										"LinkedServiceName": "AzureDataLakeStorage",
+										"LocationSetToDatabaseDefault": true
+									}
+								},
+								"Properties": {
+									"textinputformat.record.delimiter": ",",
+									"compression": "{\"type\":\"Snappy\",\"level\":\"optimal\"}",
+									"derivedModelAttributeInfo": "{\"attributeReferences\":{\"BusinessMetricTypeId\":{\"entity\":\"BusinessMetricType.cdm.json/BusinessMetricType\",\"name\":\"BusinessMetricTypeId\"},\"BusinessMetricTypeName\":{\"entity\":\"BusinessMetricType.cdm.json/BusinessMetricType\",\"name\":\"BusinessMetricTypeName\"},\"BusinessMetricTypeDescription\":{\"entity\":\"BusinessMetricType.cdm.json/BusinessMetricType\",\"name\":\"BusinessMetricTypeDescription\"}}}"
+								},
+								"Compressed": false,
+								"IsStoredAsSubdirectories": false
+							},
+							"Properties": {
+								"DerivedModelEntityInfo": "{\"entityDirectives\":{\"name\":\"BusinessMetricType\",\"description\":\"Business ratios are categorized into 6 categories:\\n\\n- Sales Ratios\\n- Profit Ratios\\n- Debt & Capital Ratios\\n- Efficiency Ratios\\n- Marketing Ratios\\n- Investment Ratios\",\"baseEntityReference\":{\"name\":\"BusinessMetricType\",\"path\":\"BusinessMetricType.cdm.json/BusinessMetricType\"},\"projectionInfo\":{\"attributes\":[{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"BusinessMetricType.cdm.json/BusinessMetricType\",\"name\":\"BusinessMetricTypeId\"},\"dataType\":\"integer\",\"description\":\"The unique identifier of a Business Metric Type.\",\"isNullable\":false,\"name\":\"BusinessMetricTypeId\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"BusinessMetricType.cdm.json/BusinessMetricType\",\"name\":\"BusinessMetricTypeName\"},\"dataType\":\"string\",\"dataTypeLength\":128,\"description\":\"The name of a Business Metric Type.\",\"isNullable\":true,\"name\":\"BusinessMetricTypeName\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"BusinessMetricType.cdm.json/BusinessMetricType\",\"name\":\"BusinessMetricTypeDescription\"},\"dataType\":\"string\",\"dataTypeLength\":512,\"description\":\"The description of a Business Metric Type.\",\"isNullable\":true,\"name\":\"BusinessMetricTypeDescription\"}]},\"primaryKey\":[\"BusinessMetricTypeId\"]}}",
+								"Description": "Business ratios are categorized into 6 categories:\n\n- Sales Ratios\n- Profit Ratios\n- Debt & Capital Ratios\n- Efficiency Ratios\n- Marketing Ratios\n- Investment Ratios",
+								"DisplayFolderInfo": "{\"name\":\"Business Metrics\",\"colorCode\":\"#001D3F\"}",
+								"PrimaryKeys": "BusinessMetricTypeId",
+								"spark.sql.sources.provider": "parquet"
+							},
+							"Retention": 0,
+							"Temporary": false,
+							"IsRewriteEnabled": false
+						},
+						"Source": {
+							"Type": "SPARK"
+						}
 					}
 				]
 			},
@@ -12139,34 +12465,6 @@
 			},
 			"dependsOn": [],
 			"location": "centralindia"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/Notebook 1')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"metadata": {
-					"language_info": {
-						"name": "python"
-					}
-				},
-				"cells": [
-					{
-						"cell_type": "code",
-						"metadata": {},
-						"source": [
-							"%%pyspark\n",
-							"df = spark.sql(\"SELECT * FROM `Retail_Lake`.`Customer`\")\n",
-							"# df.show(10)"
-						],
-						"outputs": [],
-						"execution_count": null
-					}
-				]
-			},
-			"dependsOn": []
 		}
 	]
 }
