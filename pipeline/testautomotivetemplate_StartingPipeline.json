@@ -1,0 +1,24 @@
+{
+	"name": "testautomotivetemplate_StartingPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "C0_testautomotivetemplate",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "C0_testautomotivetemplate1",
+						"type": "PipelineReference"
+					}
+				}
+			}
+		],
+		"concurrency": 1,
+		"folder": {
+			"name": "testautomotivetemplate"
+		},
+		"annotations": []
+	}
+}

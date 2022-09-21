@@ -1,0 +1,31 @@
+{
+	"name": "testautomotivetemplate_BusinessMetricType_DataFlow",
+	"properties": {
+		"folder": {
+			"name": "testautomotivetemplate"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage",
+						"type": "LinkedServiceReference"
+					},
+					"name": "BusinessSource"
+				}
+			],
+			"sinks": [
+				{
+					"name": "BusinessMetricTypeSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectBusinessMetricType"
+				}
+			],
+			"script": "source(output(\n\t\tBusinessMetricTypeId as short,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'raw',\n\tfolderPath: 'data',\n\tfileName: 'BusinessMetricType.csv',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: true) ~> BusinessSource\nBusinessSource select(mapColumn(\n\t\tBusinessMetricTypeId,\n\t\tBusinessMetricTypeName,\n\t\tBusinessMetricTypeDescription\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> SelectBusinessMetricType\nSelectBusinessMetricType sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tstore: 'synapse',\n\tdatabaseType: 'spark',\n\tformat: 'table',\n\tdatabase: 'Automotive_qxf',\n\ttableName: 'BusinessMetricType',\n\tinput(\n\t\tBusinessMetricTypeId as integer,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t)) ~> BusinessMetricTypeSink"
+		}
+	}
+}
