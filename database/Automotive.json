@@ -1,0 +1,24 @@
+{
+	"name": "Automotive",
+	"properties": {
+		"Name": "Automotive",
+		"EntityType": "DATABASE",
+		"Description": "",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Automotive\",\"Version\":\"0.1.0\"}}}",
+			"IsSyMSCDMDatabase": true
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://gold@azrawdatalakeglsah.dfs.core.windows.net/lake_database_automotive",
+			"Properties": {
+				"FormatType": "parquet",
+				"LinkedServiceName": "AzureDataLakeStorage"
+			}
+		}
+	},
+	"type": "DATABASE"
+}
