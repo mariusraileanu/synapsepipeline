@@ -1,0 +1,18 @@
+{
+	"name": "AzureDataLakeStorageUserManagedIdentity",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://azrawdatalakeglsah.dfs.core.windows.net/",
+			"credential": {
+				"referenceName": "CredentialDataProduct001",
+				"type": "CredentialReference"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
