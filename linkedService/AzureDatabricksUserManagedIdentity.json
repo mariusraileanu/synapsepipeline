@@ -1,0 +1,42 @@
+{
+	"name": "AzureDatabricksUserManagedIdentity",
+	"properties": {
+		"parameters": {
+			"clusterVersion": {
+				"type": "string",
+				"defaultValue": "11.2.x-scala2.12"
+			},
+			"nodeType": {
+				"type": "string",
+				"defaultValue": "Standard_E8_v3"
+			},
+			"workers": {
+				"type": "string",
+				"defaultValue": "3"
+			}
+		},
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-700739623647656.16.azuredatabricks.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/fdc33604-09e4-45f1-a48e-46a602d755d4/resourceGroups/rg-end-to-end-analytics-prod-00001/providers/Microsoft.Databricks/workspaces/azdbglsahuae",
+			"credential": {
+				"referenceName": "CredentialDataProduct001",
+				"type": "CredentialReference"
+			},
+			"newClusterNodeType": "@linkedService().nodeType",
+			"newClusterNumOfWorker": "@linkedService().workers",
+			"newClusterSparkEnvVars": {
+				"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+			},
+			"newClusterVersion": "@linkedService().clusterVersion",
+			"newClusterInitScripts": [],
+			"clusterOption": "Fixed"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
