@@ -21,21 +21,28 @@
 		},
 		"azmysql_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'azmysql'"
+			"metadata": "Secure string for 'connectionString' of 'azmysql'",
+			"defaultValue": "Server=@{linkedService().hostName};Port=@{linkedService().port};Database=@{linkedService().databaseName};UID=@{linkedService().userName};SSLMode=1;UseSystemTrustStore=0"
 		},
 		"azsqlserver_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'azsqlserver'"
+			"metadata": "Secure string for 'connectionString' of 'azsqlserver'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().serverName};Initial Catalog=@{linkedService().databaseName};User ID=@{linkedService().userName}"
 		},
 		"azsynapsewksglsah-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'azsynapsewksglsah-WorkspaceDefaultSqlServer'"
+			"metadata": "Secure string for 'connectionString' of 'azsynapsewksglsah-WorkspaceDefaultSqlServer'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:azsynapsewksglsah.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"linkedServiceMetadata_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedServiceMetadata'"
 		},
 		"AzureDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://azrawdatalakeglsah.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorageUserManagedIdentity_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azrawdatalakeglsah.dfs.core.windows.net/"
 		},
@@ -92,108 +99,6 @@
 		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('workspaceName'), '/C0_testautomotivetemplate')]",
-			"type": "Microsoft.Synapse/workspaces/pipelines",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"activities": [
-					{
-						"name": "testautomotivetemplate_BusinessMetricType_DataFlow",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "testautomotivetemplate_BusinessMetricType_DataFlow",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"BusinessSource": {},
-									"BusinessMetricTypeSink": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"concurrency": 1,
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "testautomotivetemplate"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/dataflows/testautomotivetemplate_BusinessMetricType_DataFlow')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/C0_testautomotivetemplate1')]",
-			"type": "Microsoft.Synapse/workspaces/pipelines",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"activities": [
-					{
-						"name": "testautomotivetemplate_BusinessMetricType_DataFlow",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "testautomotivetemplate_BusinessMetricType_DataFlow",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"BusinessSource": {},
-									"BusinessMetricTypeSink": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"concurrency": 1,
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "testautomotivetemplate"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/dataflows/testautomotivetemplate_BusinessMetricType_DataFlow')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/Copy Data from MySQL to ADLS')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
@@ -2542,40 +2447,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/testautomotivetemplate_StartingPipeline')]",
-			"type": "Microsoft.Synapse/workspaces/pipelines",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"activities": [
-					{
-						"name": "C0_testautomotivetemplate",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "C0_testautomotivetemplate1",
-								"type": "PipelineReference"
-							},
-							"parameters": {}
-						}
-					}
-				],
-				"concurrency": 1,
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "testautomotivetemplate"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/pipelines/C0_testautomotivetemplate1')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/adls_parquet')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
@@ -2830,6 +2701,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/AzureDataLakeStorageUserManagedIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorageUserManagedIdentity_properties_typeProperties_url')]",
+					"credential": {
+						"referenceName": "CredentialDataProduct001",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/credentials/CredentialDataProduct001')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/AzureDatabricks')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -2903,6 +2798,54 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureDatabricksUserManagedIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"clusterVersion": {
+						"type": "string",
+						"defaultValue": "11.2.x-scala2.12"
+					},
+					"nodeType": {
+						"type": "string",
+						"defaultValue": "Standard_E8_v3"
+					},
+					"workers": {
+						"type": "string",
+						"defaultValue": "3"
+					}
+				},
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-700739623647656.16.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/fdc33604-09e4-45f1-a48e-46a602d755d4/resourceGroups/rg-end-to-end-analytics-prod-00001/providers/Microsoft.Databricks/workspaces/azdbglsahuae",
+					"credential": {
+						"referenceName": "CredentialDataProduct001",
+						"type": "CredentialReference"
+					},
+					"newClusterNodeType": "@linkedService().nodeType",
+					"newClusterNumOfWorker": "@linkedService().workers",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "@linkedService().clusterVersion",
+					"newClusterInitScripts": [],
+					"clusterOption": "Fixed"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/credentials/CredentialDataProduct001')]"
 			]
 		},
 		{
@@ -3403,12 +3346,24 @@
 							"name": "SelectBusinessMetricType"
 						}
 					],
-					"script": "source(output(\n\t\tBusinessMetricTypeId as short,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'raw',\n\tfolderPath: 'data',\n\tfileName: 'BusinessMetricType.csv',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: true) ~> BusinessSource\nBusinessSource select(mapColumn(\n\t\tBusinessMetricTypeId,\n\t\tBusinessMetricTypeName,\n\t\tBusinessMetricTypeDescription\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> SelectBusinessMetricType\nSelectBusinessMetricType sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tstore: 'synapse',\n\tdatabaseType: 'spark',\n\tformat: 'table',\n\tdatabase: 'Automotive_qxf',\n\ttableName: 'BusinessMetricType',\n\tinput(\n\t\tBusinessMetricTypeId as integer,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t)) ~> BusinessMetricTypeSink"
+					"script": "source(output(\n\t\tBusinessMetricTypeId as short,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t),\n\tuseSchema: false,\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'raw',\n\tfolderPath: 'data',\n\tfileName: 'BusinessMetricType.csv',\n\tcolumnDelimiter: ',',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: true) ~> BusinessSource\nBusinessSource select(mapColumn(\n\t\tBusinessMetricTypeId,\n\t\tBusinessMetricTypeName,\n\t\tBusinessMetricTypeDescription\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> SelectBusinessMetricType\nSelectBusinessMetricType sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tstore: 'synapse',\n\tdatabaseType: 'spark',\n\tformat: 'table',\n\tdatabase: 'Automotive_qxf',\n\ttableName: 'BusinessMetricType',\n\tinput(\n\t\tBusinessMetricTypeId as integer,\n\t\tBusinessMetricTypeName as string,\n\t\tBusinessMetricTypeDescription as string\n\t)) ~> BusinessMetricTypeSink"
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/AzureDataLakeStorage')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/CredentialDataProduct001')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/fdc33604-09e4-45f1-a48e-46a602d755d4/resourceGroups/rg-end-to-end-analytics-prod-00001/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adf-dataproduct001"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
