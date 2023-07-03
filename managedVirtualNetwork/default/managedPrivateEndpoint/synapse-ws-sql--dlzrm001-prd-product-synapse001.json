@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sql--dlzrm001-prd-product-synapse001",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dlzrm001-prd-shared-product/providers/Microsoft.Synapse/workspaces/dlzrm001-prd-product-synapse001",
+		"groupId": "sql",
+		"fqdns": [
+			"dlzrm001-prd-product-synapse001.adbb7dd3-6fa7-4672-939f-d644fb390307.sql.azuresynapse.net"
+		]
+	}
+}
