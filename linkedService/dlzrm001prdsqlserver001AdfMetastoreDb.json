@@ -1,0 +1,16 @@
+{
+	"name": "dlzrm001prdsqlserver001AdfMetastoreDb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureSqlDatabase",
+		"annotations": [],
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		},
+		"description": "Sql Database for storing metadata",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=dlzrm001-prd-sqlserver001.database.windows.net;Initial Catalog=AdfMetastoreDb"
+		}
+	}
+}

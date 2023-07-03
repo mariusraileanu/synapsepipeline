@@ -1,0 +1,16 @@
+{
+	"name": "dlzrm001prdencur",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureBlobFS",
+		"annotations": [],
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		},
+		"description": "Storage Account for raw data",
+		"typeProperties": {
+			"url": "https://dlzrm001prdencur.dfs.core.windows.net"
+		}
+	}
+}

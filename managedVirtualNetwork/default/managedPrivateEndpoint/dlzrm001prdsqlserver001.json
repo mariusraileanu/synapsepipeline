@@ -1,0 +1,7 @@
+{
+	"name": "dlzrm001prdsqlserver001",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dlzrm001-prd-metadata/providers/Microsoft.Sql/servers/dlzrm001-prd-sqlserver001",
+		"groupId": "sqlServer"
+	}
+}

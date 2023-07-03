@@ -1,0 +1,42 @@
+{
+	"name": "dlzrm001prdintegrationdatabricks001",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureDatabricks",
+		"annotations": [],
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		},
+		"description": "Azure Databricks Compute for Data Engineering",
+		"parameters": {
+			"DatabricksClusterType": {
+				"type": "String",
+				"defaultValue": "Standard_DS3_v2"
+			},
+			"DatabricksAutoscale": {
+				"type": "String",
+				"defaultValue": "1:15"
+			},
+			"DatabrickClusterVersion": {
+				"type": "String",
+				"defaultValue": "7.3.x-scala2.12"
+			}
+		},
+		"typeProperties": {
+			"authentication": "MSI",
+			"domain": "https://adb-2708634991270037.17.azuredatabricks.net",
+			"newClusterCustomTags": {
+				"costCenter": "ABCDE-12345"
+			},
+			"newClusterDriverNodeType": "@linkedService().DatabricksClusterType",
+			"newClusterNodeType": "@linkedService().DatabricksClusterType",
+			"newClusterNumOfWorker": "@linkedService().DatabricksAutoscale",
+			"newClusterSparkEnvVars": {
+				"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+			},
+			"newClusterVersion": "@linkedService().DatabrickClusterVersion",
+			"workspaceResourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dlzrm001-prd-shared-integration/providers/Microsoft.Databricks/workspaces/dlzrm001-prd-integration-databricks001"
+		}
+	}
+}

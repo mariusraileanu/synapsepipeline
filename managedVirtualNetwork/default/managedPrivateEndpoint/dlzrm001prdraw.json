@@ -1,0 +1,7 @@
+{
+	"name": "dlzrm001prdraw",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dlzrm001-prd-storage/providers/Microsoft.Storage/storageAccounts/dlzrm001prdraw",
+		"groupId": "dfs"
+	}
+}

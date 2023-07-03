@@ -1,0 +1,7 @@
+{
+	"name": "Purview",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dmzrm-prd-governance/providers/Microsoft.Purview/accounts/dmzrm-prd-purview001",
+		"groupId": "account"
+	}
+}

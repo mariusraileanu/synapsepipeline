@@ -1,0 +1,9 @@
+{
+	"name": "dlzrm001-prd-integration-datafactory001",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "b0ac54c7-0962-421a-a513-6f099ffb32ec",
+		"tenantId": "2d08f8c0-18f1-4d99-9cba-250ada3871b0"
+	}
+}

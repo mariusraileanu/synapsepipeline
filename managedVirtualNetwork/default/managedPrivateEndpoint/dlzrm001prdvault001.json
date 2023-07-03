@@ -1,0 +1,10 @@
+{
+	"name": "dlzrm001prdvault001",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dlzrm001-prd-metadata/providers/Microsoft.KeyVault/vaults/dlzrm001-prd-vault001",
+		"groupId": "vault",
+		"fqdns": [
+			"dlzrm001-prd-vault001.vault.azure.net"
+		]
+	}
+}

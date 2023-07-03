@@ -1,0 +1,13 @@
+{
+	"name": "dataLandingZoneShir-dlzrm001-prd-shir001",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Data Landing Zone - Self-hosted Integration Runtime",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dlzrm001-prd-runtimes/providers/Microsoft.DataFactory/factories/dlzrm001-prd-runtime-datafactory001/integrationRuntimes/dataLandingZoneShir-dlzrm001-prd-shir001",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}

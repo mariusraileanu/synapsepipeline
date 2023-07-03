@@ -1,0 +1,7 @@
+{
+	"name": "Purview_queue",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/6776741b-2e72-4fa1-a618-87ec0fa5343b/resourceGroups/dmzrm-prd-purview001/providers/Microsoft.Storage/storageAccounts/scanwesteuropeujsgojt",
+		"groupId": "queue"
+	}
+}
